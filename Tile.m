@@ -7,6 +7,7 @@
 //
 
 #import "Tile.h"
+#import "MainView.h"
 
 @implementation Tile
 
@@ -20,10 +21,11 @@
 		self.backgroundColor = [UIColor clearColor];
 		
 		// set gesture recognition
-		UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpHandler)];
+		swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUpHandler)];
 		
 		swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
 		[self addGestureRecognizer:swipeUp];
+		
 		
 		
 		cleared = NO;
@@ -31,27 +33,22 @@
     return self;
 }
 
+-(id)initWithFrame:(CGRect)frame andDelegate:(id)viewDelegate
+{
+	parent = viewDelegate;
+	return [self initWithFrame:frame];
+}
+
 -(void) swipeUpHandler
 {
 	NSLog(@"swipeHandler");
+	
+	[parent increaseCount];
+	
 	cleared = YES;
 	[self setNeedsDisplay];
 }
 
-//- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-//{
-//	NSLog(@"touch began");
-//	startLocation = [[touches anyObject] locationInView:self];
-//}
-//
-//- (void) touchesMoved: (NSSet *) touches withEvent: (UIEvent *) event {
-//	touchPoint = [[touches anyObject] locationInView: self];
-//	
-//	CGRect frame = self.frame;
-//	frame.origin.x += touchPoint.x - startLocation.x;
-//	frame.origin.y += touchPoint.y - startLocation.y;
-//	[self setFrame: frame];
-//}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

@@ -21,15 +21,15 @@
 		
 		// init splash screen and game screen
 		splash = [[MainView alloc] initWithFrame:frame andDelegate:self];
-		splash.text = @"splash screen";
+		//splash.text = @"splash screen";
 		splash.type = @"splash";
-		splash.backgroundColor = [UIColor redColor];
+		splash.backgroundColor = [UIColor grayColor];
 		[splash setSplash];
 		
 		main = [[MainView alloc] initWithFrame:frame andDelegate:self];
 		//main.text = @"main screen";
 		main.type = @"main";
-		main.backgroundColor = [UIColor grayColor];
+		main.backgroundColor = [UIColor blackColor];
 		[main setMain];
 		
 		// define all subviews of THIS view in an array
@@ -53,6 +53,23 @@
 						if(finished)
 						{
 							NSLog(@"now showing game screen");
+							viewIndex = 1;
+						}
+					}
+	 ];
+}
+
+-(void) backToTitleScreen
+{
+	[UIView transitionFromView:main 
+						toView:splash 
+					  duration:1 
+					   options:UIViewAnimationOptionTransitionFlipFromLeft
+					completion:^(BOOL finished){
+						if(finished)
+						{
+							NSLog(@"now showing title screen");
+							viewIndex = 0;
 						}
 					}
 	 ];

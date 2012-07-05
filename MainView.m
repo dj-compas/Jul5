@@ -55,37 +55,88 @@
 {
 	// set as main screen
 	
-	// make a new tile and add it to the view
-	
-	/*
-	CGRect rect = CGRectMake(0, 0, 100, 100);
-	Tile *arrow = [[Tile alloc] initWithFrame:rect];
-	[self addSubview:arrow];
-	*/
+	count = 0;
 	
 	// define size for width/height of tile frame
 	NSUInteger size = 100;
 	NSUInteger gridSize = 3;
 	
 	// make muteable set
-	//NSMutableSet *tileSet = [[NSMutableSet alloc] init];
+	tileSet = [[NSMutableSet alloc] init];
 	
-	// for loops to add sets to view
+	// create an offset point for starting the tile placement in the center of the screen
+	CGFloat offsetX = self.bounds.size.width/2 - (size * gridSize)/2;
+	CGFloat offsetY = self.bounds.size.height/2 - (size * gridSize)/2;
+	
+	// for loops to add tiles to view
 	for (int i = 0; i < gridSize; ++i) {
 		// stuff
 		for (int j = 0; j < gridSize; ++j) {
-			Tile *arrow = [[Tile alloc] initWithFrame:CGRectMake(j*size, i*size, size, size)];
+			Tile *arrow = [[Tile alloc] initWithFrame:CGRectMake(j*size + offsetX, i*size + offsetY, size, size) andDelegate:self];
 			
-			// add arrow to set (why? I don't know...)
-			//[tileSet addObject:arrow];
+			// add arrow to muteable set
+			[tileSet addObject:arrow];
 			
-			NSLog(@"x:%f, y:%f | xx:%f, yy:%f", arrow.frame.origin.x, arrow.frame.origin.y, (float)(j*size), (float)(i*size));
+			NSUInteger direction = arc4random_uniform(4) * 90;
+			NSLog(@"random: %u", direction);
+			
+			arrow.transform = CGAffineTransformMakeRotation(direction * (M_PI/180));
+			
+			//NSLog(@"x:%f, y:%f | xx:%f, yy:%f", arrow.frame.origin.x, arrow.frame.origin.y, (float)(j*size), (float)(i*size));
 			
 			[self addSubview:arrow];
 			
 			
 		}
 	}
+	
+	// add a refresh button to refresh the tiles
+	
+	UIButton *refresh = [UIButton buttonWithType:UIButtonTypeContactAdd];
+	
+	// move button to the right side of the screen
+	CGRect buttonFrame = refresh.frame;
+	buttonFrame.origin.x = self.frame.size.width - buttonFrame.size.width;
+	[refresh setFrame:buttonFrame];
+	
+	[refresh addTarget:self action:@selector(clearTiles) forControlEvents:UIControlEventTouchUpInside];
+	
+	[self addSubview:refresh];
+	
+	// add a back button to go back to the title screen
+	
+	UIButton *quit = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+	
+	[quit addTarget:self action:@selector(backToTitleScreen) forControlEvents:UIControlEventTouchUpInside];
+	
+	quit.transform = CGAffineTransformMakeRotation(180 * (M_PI/180));
+	[self addSubview:quit];
+}
+
+-(void)increaseCount
+{
+	++count;
+	
+	if (count == 9)
+	{
+		NSLog(@"all clear!!");
+		[self clearTiles];
+	}
+	
+}
+
+-(void) clearTiles
+{
+	for (Tile *t in tileSet) {
+		[t removeFromSuperview];
+	}
+	
+	[self setMain];
+}
+
+-(void) backToTitleScreen
+{
+	[parent backToTitleScreen];
 }
 
 //=======================================================================

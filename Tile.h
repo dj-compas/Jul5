@@ -12,8 +12,12 @@
 {
 	CGPoint startLocation;
 	CGPoint touchPoint;
+	UISwipeGestureRecognizer *swipeUp;
+	id parent;
 }
 
 @property (nonatomic, assign) BOOL cleared;
+
+-(id)initWithFrame:(CGRect)frame andDelegate:(id)viewDelegate;
 
 @end

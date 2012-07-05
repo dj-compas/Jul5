@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) uint viewIndex;
 
--(void)moveFromSplashToGame;
+-(void) moveFromSplashToGame;
+-(void) backToTitleScreen;
 
 @end

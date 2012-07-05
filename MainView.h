@@ -13,6 +13,8 @@
 {
 	id parent;
 	NSString *msg;
+	int count;
+	NSMutableSet *tileSet;
 }
 
 - (id) initWithFrame:(CGRect)frame andDelegate:(id)viewDelegate;
@@ -22,5 +24,7 @@
 
 -(void) setSplash;
 -(void) setMain;
+-(void) increaseCount;
+-(void) clearTiles;
 
 @end
